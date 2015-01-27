@@ -16,10 +16,13 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_actionCalculate_triggered();
+    void on_actionHesapla_triggered();
+
+    void on_actionRaporla_triggered();
 
 private:
     Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_H
