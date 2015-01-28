@@ -23,9 +23,9 @@ struct AdjustedInputs
     float AdjustedPositivePlates;
     float AdjustedNegativePlates;
     float PositivePlateWeight;
-    float PositivePlateWidth;
+    float PositivePlateThickness;
     float NegativePlateWeight;
-    float NegativePlateWidth;
+    float NegativePlateThickness;
     float UsefulCellWidth;
 };
 
@@ -43,6 +43,12 @@ struct Outputs
 
 };
 
+struct Constants
+{
+    float BaseAhperkg;
+    float CCAperPlate;
+    float Margin;
+};
 
 namespace Ui {
 class MainWindow;
@@ -62,6 +68,9 @@ private slots:
     void on_actionRaporla_triggered();
 
     bool GetInputs(Inputs * TempInputs);
+    bool GetAdjustedInputs(AdjustedInputs * TempAdjustedInputs);
+    bool GetConstants(Constants * TempConstants);
+    bool GetOutputs(Outputs * TempOutputs);
 
 private:
     Ui::MainWindow *ui;

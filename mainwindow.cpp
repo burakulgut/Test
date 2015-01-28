@@ -25,10 +25,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 /*
-InputTable              AdjustedInputTable      OutputTable
-0 Kapasite              0 N+                    0 PAM/NAM
-1 CCA                   1 N-                    1 +Ah/gr
-2 # +                   2 + Izg. Ağırlığı       2 -Ah/gr
+InputTable              AdjustedInputTable      OutputTable                 ConstantsTable
+0 Kapasite              0 N+                    0 PAM/NAM                   0 Taban Ah/kg
+1 CCA                   1 N-                    1 +Ah/gr                    1 CCA / Plaka
+2 # +                   2 + Izg. Ağırlığı       2 -Ah/gr                    2 Marj
 3 # -                   3 + Izg. Kalınlığı      3 Eleman Set Kalınlığı
 4 + sıvama              4 - Izg. Ağırlığı       4 Sıkıştırma Miktarı
 5 - sıvama              5 - Izg. Kalınlığı      5 Asit Mik./(PAM+NAM)
@@ -178,6 +178,226 @@ bool MainWindow::GetInputs(Inputs * TempInputs)
     return result;
 }
 
+bool MainWindow::GetAdjustedInputs(AdjustedInputs * TempAdjustedInputs)
+{
+    bool result;
+    QTableWidgetItem * myitem;
+    result = 1;
+
+    myitem = ui->AdjustedInputTable->item(0,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempAdjustedInputs->AdjustedPositivePlates = 0;
+    }
+    else
+    {
+        TempAdjustedInputs->AdjustedPositivePlates = myitem->text().toFloat();
+    }
+
+    myitem = ui->AdjustedInputTable->item(1,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempAdjustedInputs->AdjustedNegativePlates = 0;
+    }
+    else
+    {
+        TempAdjustedInputs->AdjustedNegativePlates = myitem->text().toFloat();
+    }
+
+    myitem = ui->AdjustedInputTable->item(2,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempAdjustedInputs->PositivePlateWeight = 0;
+    }
+    else
+    {
+        TempAdjustedInputs->PositivePlateWeight = myitem->text().toFloat();
+    }
+
+    myitem = ui->AdjustedInputTable->item(3,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempAdjustedInputs->PositivePlateThickness = 0;
+    }
+    else
+    {
+        TempAdjustedInputs->PositivePlateThickness = myitem->text().toFloat();
+    }
+
+    myitem = ui->AdjustedInputTable->item(4,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempAdjustedInputs->NegativePlateWeight = 0;
+    }
+    else
+    {
+        TempAdjustedInputs->NegativePlateWeight = myitem->text().toFloat();
+    }
+
+    myitem = ui->AdjustedInputTable->item(5,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempAdjustedInputs->NegativePlateThickness = 0;
+    }
+    else
+    {
+        TempAdjustedInputs->NegativePlateThickness = myitem->text().toFloat();
+    }
+    return result;
+
+}
+
+bool MainWindow::GetOutputs(Outputs * TempOutputs)
+{
+    bool result;
+    QTableWidgetItem * myitem;
+    result = 1;
+
+    myitem = ui->OutputTable->item(0,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempOutputs->PAMNAMRatio = 0;
+    }
+    else
+    {
+        TempOutputs->PAMNAMRatio = myitem->text().toFloat();
+    }
+
+    myitem = ui->OutputTable->item(1,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempOutputs->PositiveAhperg = 0;
+    }
+    else
+    {
+        TempOutputs->PositiveAhperg = myitem->text().toFloat();
+    }
+
+    myitem = ui->OutputTable->item(2,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempOutputs->NegativeAhperg = 0;
+    }
+    else
+    {
+        TempOutputs->NegativeAhperg = myitem->text().toFloat();
+    }
+
+    myitem = ui->OutputTable->item(3,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempOutputs->CellSetWidth = 0;
+    }
+    else
+    {
+        TempOutputs->CellSetWidth = myitem->text().toFloat();
+    }
+
+    myitem = ui->OutputTable->item(4,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempOutputs->CompressionThickness = 0;
+    }
+    else
+    {
+        TempOutputs->CompressionThickness = myitem->text().toFloat();
+    }
+
+    myitem = ui->OutputTable->item(5,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempOutputs->AcidperActiveMass = 0;
+    }
+    else
+    {
+        TempOutputs->AcidperActiveMass = myitem->text().toFloat();
+    }
+
+    myitem = ui->OutputTable->item(6,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempOutputs->ProdTreeAcidAmount = 0;
+    }
+    else
+    {
+        TempOutputs->ProdTreeAcidAmount = myitem->text().toFloat();
+    }
+
+    myitem = ui->OutputTable->item(7,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempOutputs->TotalLeadAmount = 0;
+    }
+    else
+    {
+        TempOutputs->TotalLeadAmount = myitem->text().toFloat();
+    }
+    myitem = ui->OutputTable->item(8,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempOutputs->TotalSeparatorAmount = 0;
+    }
+    else
+    {
+        TempOutputs->TotalSeparatorAmount = myitem->text().toFloat();
+    }
+    return result;
+}
+
+bool MainWindow::GetConstants(Constants * TempConstants)
+{
+    bool result;
+    QTableWidgetItem * myitem;
+    result = 1;
+
+    myitem = ui->ConstantsTable->item(0,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempConstants->BaseAhperkg = 0;
+    }
+    else
+    {
+        TempConstants->BaseAhperkg = myitem->text().toFloat();
+    }
+
+    myitem = ui->ConstantsTable->item(1,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempConstants->CCAperPlate = 0;
+    }
+    else
+    {
+        TempConstants->CCAperPlate = myitem->text().toFloat();
+    }
+    myitem = ui->ConstantsTable->item(2,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempConstants->Margin = 0;
+    }
+    else
+    {
+        TempConstants->Margin = myitem->text().toFloat();
+    }
+    return result;
+}
 
 void MainWindow::on_actionHesapla_triggered()
 {
