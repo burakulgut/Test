@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->AdjustedInputTable->setColumnWidth(0,50);
     ui->AdjustedInputTable->setColumnWidth(1,50);
-    ui->AdjustedInputTable->setGeometry(ui->AdjustedInputTable->x(),ui->AdjustedInputTable->y(),220,400);
+    ui->AdjustedInputTable->setGeometry(ui->AdjustedInputTable->x(),ui->AdjustedInputTable->y(),220,ui->AdjustedInputTable->height());
 
     ui->OutputTable->setColumnWidth(0,50);
     ui->OutputTable->setColumnWidth(1,50);
