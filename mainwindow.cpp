@@ -25,12 +25,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::Usermessage(char* mystr){
+void MainWindow::Usermessage(const char* mystr){
 
     QFont myFont;
     myFont.setPointSize(16);
     ui->MessageLabel->setFont(myFont);
-    ui->MessageLabel->setText(mystr);
+    ui->MessageLabel->setText(QString(mystr));
 }
 /*
 InputTable              AdjustedInputTable      OutputTable                 ConstantsTable
@@ -407,12 +407,84 @@ bool MainWindow::GetConstants(Constants * TempConstants)
     return result;
 }
 
-bool MainWindow::PutAdjustedInputs(Inputs * TempAdjustedInputs){
-    // To be implemented
+bool MainWindow::PutAdjustedInputs(AdjustedInputs * TempAdjustedInputs)
+{
+    QTableWidgetItem *myItem;
+    char mystr[10];
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.2f",TempAdjustedInputs->AdjustedPositivePlates);
+    myItem->setText(QString(mystr));
+    ui->AdjustedInputTable->setItem(0,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.2f",TempAdjustedInputs->AdjustedNegativePlates);
+    myItem->setText(QString(mystr));
+    ui->AdjustedInputTable->setItem(1,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.2f",TempAdjustedInputs->PositivePlateWeight);
+    myItem->setText(QString(mystr));
+    ui->AdjustedInputTable->setItem(2,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.2f",TempAdjustedInputs->PositivePlateThickness);
+    myItem->setText(QString(mystr));
+    ui->AdjustedInputTable->setItem(3,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.2f",TempAdjustedInputs->NegativePlateWeight);
+    myItem->setText(QString(mystr));
+    ui->AdjustedInputTable->setItem(4,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.2f",TempAdjustedInputs->NegativePlateThickness);
+    myItem->setText(QString(mystr));
+    ui->AdjustedInputTable->setItem(5,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.2f",TempAdjustedInputs->UsefulCellWidth);
+    myItem->setText(QString(mystr));
+    ui->AdjustedInputTable->setItem(6,0,myItem);
+
+    return (bool)1;
 }
 
-bool MainWindow::PutOutputs(Outputs* TempOutputs){
-    // To be implemented
+bool MainWindow::PutOutputs(Outputs* TempOutputs)
+{
+    QTableWidgetItem *myItem;
+    char mystr[10];
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.2f",TempOutputs->PAMNAMRatio);
+    myItem->setText(QString(mystr));
+    ui->OutputTable->setItem(0,0,myItem);
+    sprintf(mystr,"%3.2f",TempOutputs->PositiveAhperg);
+    myItem->setText(QString(mystr));
+    ui->OutputTable->setItem(1,0,myItem);
+    sprintf(mystr,"%3.2f",TempOutputs->NegativeAhperg);
+    myItem->setText(QString(mystr));
+    ui->OutputTable->setItem(2,0,myItem);
+    sprintf(mystr,"%3.2f",TempOutputs->CellSetWidth);
+    myItem->setText(QString(mystr));
+    ui->OutputTable->setItem(3,0,myItem);
+    sprintf(mystr,"%3.2f",TempOutputs->CompressionThickness);
+    myItem->setText(QString(mystr));
+    ui->OutputTable->setItem(4,0,myItem);
+    sprintf(mystr,"%3.2f",TempOutputs->AcidperActiveMass);
+    myItem->setText(QString(mystr));
+    ui->OutputTable->setItem(5,0,myItem);
+    sprintf(mystr,"%3.2f",TempOutputs->ProdTreeAcidAmount);
+    myItem->setText(QString(mystr));
+    ui->OutputTable->setItem(6,0,myItem);
+    sprintf(mystr,"%3.2f",TempOutputs->TotalLeadAmount);
+    myItem->setText(QString(mystr));
+    ui->OutputTable->setItem(7,0,myItem);
+    sprintf(mystr,"%3.2f",TempOutputs->TotalSeparatorAmount);
+    myItem->setText(QString(mystr));
+    ui->OutputTable->setItem(8,0,myItem);
+
+    return (bool)1;
 }
 
 void MainWindow::on_actionHesapla_triggered()
@@ -456,4 +528,58 @@ void MainWindow::on_actionRaporla_triggered()
     fwrite(mywstr,20,20,rapor);
     fclose(rapor);
 
+}
+
+void MainWindow::on_CalcAdjustedInputsButton_clicked()
+{
+    bool getinputsresult,putadjustedinputsresult;
+    Inputs * TempInputs;
+    AdjustedInputs * MyAdjustedInputs;
+
+    TempInputs= (Inputs*)malloc(sizeof(Inputs));
+    MyAdjustedInputs = (AdjustedInputs*)malloc(sizeof(AdjustedInputs));
+
+    getinputsresult=GetInputs(TempInputs);
+    putadjustedinputsresult = false;
+    if(getinputsresult){
+       if (TempInputs->NofPositivePlates == TempInputs->NofNegativePlates)
+       {
+           MyAdjustedInputs->AdjustedPositivePlates=TempInputs->NofPositivePlates-0.2;
+           MyAdjustedInputs->AdjustedNegativePlates=TempInputs->NofNegativePlates-0.2;
+       }
+       else
+       {
+           if(TempInputs->NofPositivePlates>TempInputs->NofNegativePlates)
+           {
+               MyAdjustedInputs->AdjustedPositivePlates=TempInputs->NofPositivePlates-0.4;
+               MyAdjustedInputs->AdjustedNegativePlates=TempInputs->NofNegativePlates;
+           }
+           else
+           {
+               MyAdjustedInputs->AdjustedPositivePlates=TempInputs->NofPositivePlates;
+               MyAdjustedInputs->AdjustedNegativePlates=TempInputs->NofNegativePlates-0.4;
+           }
+       }
+       MyAdjustedInputs->NegativePlateWeight = 0.0;
+       MyAdjustedInputs->NegativePlateThickness=0.0;
+       MyAdjustedInputs->PositivePlateWeight = 0.0;
+       MyAdjustedInputs->PositivePlateThickness=0.0;
+       MyAdjustedInputs->UsefulCellWidth=0.0;
+
+       putadjustedinputsresult=PutAdjustedInputs(MyAdjustedInputs);
+    }
+
+
+    if(getinputsresult && putadjustedinputsresult)
+        Usermessage("Ayarlanmış girdiler tablosu güncellendi!");
+    else
+        Usermessage("Eksik giriş. Lütfen kontrol edin!");
+    free(TempInputs);
+    free(MyAdjustedInputs);
+    return;
+}
+
+void MainWindow::on_InputTable_doubleClicked(const QModelIndex &index)
+{
+    Usermessage("");
 }

@@ -71,7 +71,14 @@ private slots:
     bool GetAdjustedInputs(AdjustedInputs * TempAdjustedInputs);
     bool GetConstants(Constants * TempConstants);
     bool GetOutputs(Outputs * TempOutputs);
-    void Usermessage(char* mystr);
+    bool PutAdjustedInputs(AdjustedInputs * TempAdjustedInputs);
+    bool PutOutputs(Outputs* TempOutputs);
+
+    void Usermessage(const char * mystr);
+
+    void on_CalcAdjustedInputsButton_clicked();
+
+    void on_InputTable_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;
