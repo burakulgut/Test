@@ -71,6 +71,7 @@ private slots:
     bool GetAdjustedInputs(AdjustedInputs * TempAdjustedInputs);
     bool GetConstants(Constants * TempConstants);
     bool GetOutputs(Outputs * TempOutputs);
+    void Usermessage(char* mystr);
 
 private:
     Ui::MainWindow *ui;

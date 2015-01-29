@@ -24,6 +24,14 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::Usermessage(char* mystr){
+
+    QFont myFont;
+    myFont.setPointSize(16);
+    ui->MessageLabel->setFont(myFont);
+    ui->MessageLabel->setText(mystr);
+}
 /*
 InputTable              AdjustedInputTable      OutputTable                 ConstantsTable
 0 Kapasite              0 N+                    0 PAM/NAM                   0 Taban Ah/kg
@@ -399,6 +407,14 @@ bool MainWindow::GetConstants(Constants * TempConstants)
     return result;
 }
 
+bool MainWindow::PutAdjustedInputs(Inputs * TempAdjustedInputs){
+    // To be implemented
+}
+
+bool MainWindow::PutOutputs(Outputs* TempOutputs){
+    // To be implemented
+}
+
 void MainWindow::on_actionHesapla_triggered()
 {
     bool getinputsresult;
@@ -419,6 +435,7 @@ void MainWindow::on_actionHesapla_triggered()
     }
     else
     {
+        Usermessage("Invalid Input");
         myitem1 = new QTableWidgetItem;
         myitem1->setText("Invalid Input");
         ui->OutputTable->setItem(0,0,myitem1);
