@@ -149,7 +149,7 @@ bool MainWindow::GetInputs(Inputs * TempInputs)
     }
     else
     {
-        TempInputs->SeparatorThickness = myitem->text().toShort();
+        TempInputs->SeparatorThickness = myitem->text().toFloat();
     }
 
     myitem = ui->InputTable->item(9,0);
@@ -160,7 +160,7 @@ bool MainWindow::GetInputs(Inputs * TempInputs)
     }
     else
     {
-        TempInputs->SeparatorWidth = myitem->text().toShort();
+        TempInputs->SeparatorWidth = myitem->text().toFloat();
     }
 
     myitem = ui->InputTable->item(10,0);
@@ -256,6 +256,16 @@ bool MainWindow::GetAdjustedInputs(AdjustedInputs * TempAdjustedInputs)
     else
     {
         TempAdjustedInputs->NegativePlateThickness = myitem->text().toFloat();
+    }
+    myitem = ui->AdjustedInputTable->item(6,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempAdjustedInputs->UsefulCellWidth = 0;
+    }
+    else
+    {
+        TempAdjustedInputs->UsefulCellWidth = myitem->text().toFloat();
     }
     return result;
 
@@ -459,27 +469,35 @@ bool MainWindow::PutOutputs(Outputs* TempOutputs)
     sprintf(mystr,"%3.2f",TempOutputs->PAMNAMRatio);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(0,0,myItem);
+    myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.2f",TempOutputs->PositiveAhperg);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(1,0,myItem);
+    myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.2f",TempOutputs->NegativeAhperg);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(2,0,myItem);
+    myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.2f",TempOutputs->CellSetWidth);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(3,0,myItem);
+    myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.2f",TempOutputs->CompressionThickness);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(4,0,myItem);
+    myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.2f",TempOutputs->AcidperActiveMass);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(5,0,myItem);
+    myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.2f",TempOutputs->ProdTreeAcidAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(6,0,myItem);
+    myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.2f",TempOutputs->TotalLeadAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(7,0,myItem);
+    myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.2f",TempOutputs->TotalSeparatorAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(8,0,myItem);
@@ -582,4 +600,55 @@ void MainWindow::on_CalcAdjustedInputsButton_clicked()
 void MainWindow::on_InputTable_doubleClicked(const QModelIndex &index)
 {
     Usermessage("");
+}
+
+void MainWindow::on_CalcOutputsButton_clicked()
+{
+     bool getinputsresult,getadjustedinputsresult,putoutputsresult,getconstantsresult;
+     Inputs * MyInputs;
+     AdjustedInputs * MyAdjustedInputs;
+     Outputs * MyOutputs;
+     Constants * MyConstants;
+
+     MyInputs= (Inputs*)malloc(sizeof(Inputs));
+     MyAdjustedInputs = (AdjustedInputs*)malloc(sizeof(AdjustedInputs));
+     MyOutputs = (Outputs*)malloc(sizeof(Outputs));
+     MyConstants = (Constants *)malloc(sizeof(Constants));
+
+     getinputsresult=GetInputs(MyInputs);
+     getadjustedinputsresult = GetAdjustedInputs(MyAdjustedInputs);
+     getconstantsresult = GetConstants(MyConstants);
+
+
+     MyOutputs->PAMNAMRatio= MyInputs->NofPositivePlates*MyInputs->PositivePaste /(MyInputs->NofNegativePlates*MyInputs->NegativePaste);
+     MyOutputs->PositiveAhperg = (MyInputs->NofPositivePlates*MyInputs->PositivePaste)/MyInputs->Capacity;
+     MyOutputs->NegativeAhperg = (MyInputs->NofNegativePlates*MyInputs->NegativePaste)/MyInputs->Capacity;
+     MyOutputs->CellSetWidth = MyInputs->NofPositivePlates*MyAdjustedInputs->PositivePlateThickness+MyInputs->NofNegativePlates*MyAdjustedInputs->NegativePlateThickness+2*MyInputs->NofNegativePlates*MyInputs->SeparatorThickness;
+     MyOutputs->CompressionThickness = MyAdjustedInputs->UsefulCellWidth - MyOutputs->CellSetWidth;
+     MyOutputs->AcidperActiveMass = MyInputs->DrNAcidVolume/(MyInputs->NofPositivePlates*MyInputs->PositivePaste+MyInputs->NofNegativePlates*MyInputs->NegativePaste);
+     MyOutputs->ProdTreeAcidAmount= MyInputs->DrNAcidVolume*0.3795*1.285*6;
+     MyOutputs->TotalLeadAmount= 6*(MyInputs->NofPositivePlates*MyAdjustedInputs->PositivePlateWeight + MyInputs->NofNegativePlates*MyAdjustedInputs->NegativePlateWeight+0.9*MyInputs->PositivePaste*MyInputs->NofPositivePlates+0.9*MyInputs->NegativePaste*MyInputs->NofNegativePlates);
+     MyOutputs->TotalSeparatorAmount = 0.0;
+
+     putoutputsresult = PutOutputs(MyOutputs);
+
+     if(getinputsresult&&getadjustedinputsresult&&putoutputsresult&&getconstantsresult)
+         Usermessage("Çıktılar tablosu güncellendi");
+     else
+     {
+         if(!getinputsresult)
+             Usermessage("Girdiler tablosunda eksik giriş var!");
+         else
+             if(!getadjustedinputsresult)
+                 Usermessage("Ayarlanmış girdiler tablosunda eksik giriş var!");
+             else
+                 if(!getconstantsresult)
+                    Usermessage("Sabitler tablosunda eksik giriş var");
+                 else
+                    Usermessage("Bilinmeyen hata!");
+     }
+     free(MyInputs);
+     free(MyAdjustedInputs);
+     free(MyOutputs);
+     free(MyConstants);
 }

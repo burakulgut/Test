@@ -13,8 +13,8 @@ struct Inputs
     float PositivePaste;
     wchar_t PositivePlateCode[10];
     wchar_t NegativePlateCode[10];
-    short SeparatorThickness;
-    short SeparatorWidth;
+    float SeparatorThickness;
+    float SeparatorWidth;
     short DrNAcidVolume;
 };
 
@@ -79,6 +79,8 @@ private slots:
     void on_CalcAdjustedInputsButton_clicked();
 
     void on_InputTable_doubleClicked(const QModelIndex &index);
+
+    void on_CalcOutputsButton_clicked();
 
 private:
     Ui::MainWindow *ui;
