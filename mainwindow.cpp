@@ -625,12 +625,34 @@ void MainWindow::on_actionHesapla_triggered()
 void MainWindow::on_actionRaporla_triggered()
 {
     FILE * rapor;
-    wchar_t mywstr[20];
+    QByteArray myba;
+    char mystr[45];
+    int stringlength,i;
 
-    rapor = fopen("c:\\rapor.txt","w");
-    ui->InputTable->verticalHeaderItem(0)->text().toWCharArray(mywstr);
-//    sprintf(mystr,"Kapasite = %d \n",ui->InputTable->item(0,0)->text().toInt());
-    fwrite(mywstr,20,20,rapor);
+    rapor = fopen("c:\\rapor.html","w");
+    fwrite("<html>\n<table>\n  <tr>\n",strlen("<html>\n<table>\n  <tr>\n"),1,rapor);
+
+    fwrite("<td>\n",strlen("<td>\n"),1,rapor); // InputsTable
+    for(i=0;i<ui->InputTable->rowCount();i++)
+    {
+        myba = ui->InputTable->verticalHeaderItem(i)->text().toLocal8Bit();
+        stringlength=sprintf(mystr,"<tr><td>%s =</td> <td>%f</td></tr>\n",myba.data(),ui->InputTable->item(i,0)->text().toDouble());
+        fwrite(mystr,stringlength,1,rapor);
+    }
+    fwrite("</td>\n",5,1,rapor); // InputsTable
+
+    fwrite("<td>\n",5,1,rapor); // AdjustedInputsTable
+    for(i=0;i<ui->AdjustedInputTable->rowCount();i++)
+    {
+        myba = ui->AdjustedInputTable->verticalHeaderItem(i)->text().toLocal8Bit();
+        stringlength=sprintf(mystr,"<tr><td>%s =</td> <td>%f</td></tr>\n",myba.data(),ui->AdjustedInputTable->item(i,0)->text().toDouble());
+        fwrite(mystr,stringlength,1,rapor);
+    }
+    fwrite("</td>\n",5,1,rapor); // AdjustedInputsTable
+
+
+
+    fwrite("\n</tr>\n</table>\n</html>",17,1,rapor);
     fclose(rapor);
 
 }
@@ -777,6 +799,7 @@ void MainWindow::on_actionKaydet_triggered()
     free(MyAdjustedInputs);
     free(MyConstants);
     free(MyOutputs);
+    Usermessage("Dosya kaydedildi.");
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -814,4 +837,5 @@ void MainWindow::on_actionOpen_triggered()
     free(MyAdjustedInputs);
     free(MyConstants);
     free(MyOutputs);
+    Usermessage("Dosya açıldı.");
 }
