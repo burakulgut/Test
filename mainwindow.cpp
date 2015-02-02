@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -423,12 +424,12 @@ bool MainWindow::PutAdjustedInputs(AdjustedInputs * TempAdjustedInputs)
     char mystr[10];
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempAdjustedInputs->AdjustedPositivePlates);
+    sprintf(mystr,"%2.1f",TempAdjustedInputs->AdjustedPositivePlates);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(0,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempAdjustedInputs->AdjustedNegativePlates);
+    sprintf(mystr,"%2.1f",TempAdjustedInputs->AdjustedNegativePlates);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(1,0,myItem);
 
@@ -438,12 +439,12 @@ bool MainWindow::PutAdjustedInputs(AdjustedInputs * TempAdjustedInputs)
     ui->AdjustedInputTable->setItem(2,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempAdjustedInputs->PositivePlateThickness);
+    sprintf(mystr,"%3.3f",TempAdjustedInputs->PositivePlateThickness);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(3,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempAdjustedInputs->NegativePlateWeight);
+    sprintf(mystr,"%3.3f",TempAdjustedInputs->NegativePlateWeight);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(4,0,myItem);
 
@@ -453,7 +454,7 @@ bool MainWindow::PutAdjustedInputs(AdjustedInputs * TempAdjustedInputs)
     ui->AdjustedInputTable->setItem(5,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempAdjustedInputs->UsefulCellWidth);
+    sprintf(mystr,"%3.3f",TempAdjustedInputs->UsefulCellWidth);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(6,0,myItem);
 
@@ -466,43 +467,129 @@ bool MainWindow::PutOutputs(Outputs* TempOutputs)
     char mystr[10];
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempOutputs->PAMNAMRatio);
+    sprintf(mystr,"%3.3f",TempOutputs->PAMNAMRatio);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(0,0,myItem);
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempOutputs->PositiveAhperg);
+    sprintf(mystr,"%3.3f",TempOutputs->PositiveAhperg);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(1,0,myItem);
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempOutputs->NegativeAhperg);
+    sprintf(mystr,"%3.3f",TempOutputs->NegativeAhperg);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(2,0,myItem);
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempOutputs->CellSetWidth);
+    sprintf(mystr,"%3.3f",TempOutputs->CellSetWidth);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(3,0,myItem);
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempOutputs->CompressionThickness);
+    sprintf(mystr,"%3.3f",TempOutputs->CompressionThickness);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(4,0,myItem);
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempOutputs->AcidperActiveMass);
+    sprintf(mystr,"%3.3f",TempOutputs->AcidperActiveMass);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(5,0,myItem);
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempOutputs->ProdTreeAcidAmount);
+    sprintf(mystr,"%3.1f",TempOutputs->ProdTreeAcidAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(6,0,myItem);
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempOutputs->TotalLeadAmount);
+    sprintf(mystr,"%3.1f",TempOutputs->TotalLeadAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(7,0,myItem);
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempOutputs->TotalSeparatorAmount);
+    sprintf(mystr,"%3.1f",TempOutputs->TotalSeparatorAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(8,0,myItem);
 
     return (bool)1;
+}
+
+bool MainWindow::PutConstants(Constants* TempConstants)
+{
+    QTableWidgetItem *myItem;
+    char mystr[10];
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.3f",TempConstants->BaseAhperkg);
+    myItem->setText(QString(mystr));
+    ui->ConstantsTable->setItem(0,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.3f",TempConstants->CCAperPlate);
+    myItem->setText(QString(mystr));
+    ui->ConstantsTable->setItem(1,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.3f",TempConstants->Margin);
+    myItem->setText(QString(mystr));
+    ui->ConstantsTable->setItem(2,0,myItem);
+
+    return (bool)1;
+}
+
+bool MainWindow::PutInputs(Inputs* TempInputs)
+{
+    QTableWidgetItem *myItem;
+    char mystr[10];
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.3d",TempInputs->Capacity);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(0,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.3d",TempInputs->CCA);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(1,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.0d",TempInputs->NofPositivePlates);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(2,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.0d",TempInputs->NofNegativePlates);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(3,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.3f",TempInputs->PositivePaste);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(4,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.3f",TempInputs->NegativePaste);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(5,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%ls",TempInputs->PositivePlateCode);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(6,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%ls",TempInputs->NegativePlateCode);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(7,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.3f",TempInputs->SeparatorThickness);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(8,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.3f",TempInputs->SeparatorWidth);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(9,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.3d",TempInputs->DrNAcidVolume);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(10,0,myItem);
+
+    return(bool)1;
 }
 
 void MainWindow::on_actionHesapla_triggered()
@@ -599,6 +686,8 @@ void MainWindow::on_CalcAdjustedInputsButton_clicked()
 
 void MainWindow::on_InputTable_doubleClicked(const QModelIndex &index)
 {
+    (void)index;
+    // i.e suppress the unused variable warning
     Usermessage("");
 }
 
@@ -651,4 +740,78 @@ void MainWindow::on_CalcOutputsButton_clicked()
      free(MyAdjustedInputs);
      free(MyOutputs);
      free(MyConstants);
+}
+
+void MainWindow::on_actionKaydet_triggered()
+{
+    QString myfile;
+    QByteArray myba;
+    FILE * savefile;
+    Inputs * MyInputs;
+    AdjustedInputs * MyAdjustedInputs;
+    Constants * MyConstants;
+    Outputs * MyOutputs;
+
+    MyInputs = (Inputs*)malloc(sizeof(Inputs));
+    MyAdjustedInputs= (AdjustedInputs*)malloc(sizeof(AdjustedInputs));
+    MyConstants = (Constants*)malloc(sizeof(Constants));
+    MyOutputs = (Outputs*)malloc(sizeof(Outputs));
+
+    myfile=QFileDialog::getSaveFileName(this,"Dosya Adı","C:\\","*.aku");
+    myba=myfile.toLocal8Bit();
+    savefile=fopen(myba.data(),"wb");
+
+    GetInputs(MyInputs);
+    GetAdjustedInputs(MyAdjustedInputs);
+    GetConstants(MyConstants);
+    GetOutputs(MyOutputs);
+
+    fwrite(MyInputs,sizeof(Inputs),1,savefile);
+    fwrite(MyAdjustedInputs,sizeof(AdjustedInputs),1,savefile);
+    fwrite(MyConstants,sizeof(Constants),1,savefile);
+    fwrite(MyOutputs,sizeof(Outputs),1,savefile);
+
+    fclose(savefile);
+
+    free(MyInputs);
+    free(MyAdjustedInputs);
+    free(MyConstants);
+    free(MyOutputs);
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString myfile;
+    QByteArray myba;
+    FILE * loadfile;
+    Inputs * MyInputs;
+    AdjustedInputs * MyAdjustedInputs;
+    Constants * MyConstants;
+    Outputs * MyOutputs;
+
+    MyInputs = (Inputs*)malloc(sizeof(Inputs));
+    MyAdjustedInputs= (AdjustedInputs*)malloc(sizeof(AdjustedInputs));
+    MyConstants = (Constants*)malloc(sizeof(Constants));
+    MyOutputs = (Outputs*)malloc(sizeof(Outputs));
+    myfile = QFileDialog::getOpenFileName(this,"Dosya Adı","C:\\","*.aku");
+    myba = myfile.toLocal8Bit();
+
+    loadfile = fopen(myba.data(),"rb");
+
+    fread(MyInputs,sizeof(Inputs),1,loadfile);
+    fread(MyAdjustedInputs,sizeof(AdjustedInputs),1,loadfile);
+    fread(MyConstants,sizeof(Constants),1,loadfile);
+    fread(MyOutputs,sizeof(Outputs),1,loadfile);
+
+    PutInputs(MyInputs);
+    PutAdjustedInputs(MyAdjustedInputs);
+    PutConstants(MyConstants);
+    PutOutputs(MyOutputs);
+
+    fclose(loadfile);
+
+    free(MyInputs);
+    free(MyAdjustedInputs);
+    free(MyConstants);
+    free(MyOutputs);
 }

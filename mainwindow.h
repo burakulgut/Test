@@ -73,6 +73,8 @@ private slots:
     bool GetOutputs(Outputs * TempOutputs);
     bool PutAdjustedInputs(AdjustedInputs * TempAdjustedInputs);
     bool PutOutputs(Outputs* TempOutputs);
+    bool PutConstants(Constants* TempConstants);
+    bool PutInputs(Inputs* TempInputs);
 
     void Usermessage(const char * mystr);
 
@@ -81,6 +83,10 @@ private slots:
     void on_InputTable_doubleClicked(const QModelIndex &index);
 
     void on_CalcOutputsButton_clicked();
+
+    void on_actionKaydet_triggered();
+
+    void on_actionOpen_triggered();
 
 private:
     Ui::MainWindow *ui;

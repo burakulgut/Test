@@ -694,9 +694,10 @@
    </property>
    <widget class="QMenu" name="menuTest">
     <property name="title">
-     <string>Hesapla</string>
+     <string>Dosya</string>
     </property>
-    <addaction name="actionHesapla"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionKaydet"/>
    </widget>
    <widget class="QMenu" name="menuRaporla">
     <property name="title">
@@ -718,12 +719,28 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionHesapla">
    <property name="text">
-    <string>Hesapla</string>
+    <string>Kaydet</string>
    </property>
   </action>
   <action name="actionRaporla">
    <property name="text">
     <string>Raporla</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Aç</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionKaydet">
+   <property name="text">
+    <string>Kaydet</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>
