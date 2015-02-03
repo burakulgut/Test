@@ -642,9 +642,13 @@ void MainWindow::on_actionRaporla_triggered()
 {
     FILE * rapor;
     QByteArray myba;
-    char mystr[45];
+    char mystr[200];
     int stringlength,i;
+    QString csvstring1,csvstring2;
+    csvstring1="";
+    csvstring2="";
 
+if(0){ //htmlrapor
     rapor = fopen("c:\\rapor.html","w");
     fwrite("<html>\n<table>\n  <tr>\n",strlen("<html>\n<table>\n  <tr>\n"),1,rapor);
 
@@ -670,7 +674,25 @@ void MainWindow::on_actionRaporla_triggered()
 
     fwrite("\n</tr>\n</table>\n</html>",17,1,rapor);
     fclose(rapor);
+}//htmlrapor
 
+
+if(1){//csvrapor
+    rapor=fopen("c:\\rapor.csv","w");
+    for(i=0;i<ui->InputTable->rowCount();i++)
+    {
+        csvstring1+= ui->InputTable->verticalHeaderItem(i)->text()+";";
+        csvstring2+= ui->InputTable->item(i,0)->text()+";";
+    }
+    csvstring1+="\n";
+    csvstring2+="\n";
+    myba=csvstring1.toLocal8Bit();
+    fwrite(myba.data(),csvstring1.length(),1,rapor);
+    myba=csvstring2.toLocal8Bit();
+    fwrite(myba.data(),csvstring2.length(),1,rapor);
+
+    fclose(rapor);
+}//CSV rapor
 }
 
 
