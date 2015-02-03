@@ -30,8 +30,24 @@ void MainWindow::Usermessage(const char* mystr){
 
     QFont myFont;
     myFont.setPointSize(16);
+    QPalette pal;
+    pal.setColor(QPalette::Foreground,Qt::blue);
     ui->MessageLabel->setFont(myFont);
+    ui->MessageLabel->setPalette(pal);
     ui->MessageLabel->setText(QString(mystr));
+
+}
+
+void MainWindow::Usermessage(const char* mystr,const QColor mycolor){
+
+    QFont myFont;
+    myFont.setPointSize(16);
+    QPalette pal;
+    pal.setColor(QPalette::Foreground,mycolor);
+    ui->MessageLabel->setFont(myFont);
+    ui->MessageLabel->setPalette(pal);
+    ui->MessageLabel->setText(QString(mystr));
+
 }
 /*
 InputTable              AdjustedInputTable      OutputTable                 ConstantsTable
@@ -434,27 +450,27 @@ bool MainWindow::PutAdjustedInputs(AdjustedInputs * TempAdjustedInputs)
     ui->AdjustedInputTable->setItem(1,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempAdjustedInputs->PositivePlateWeight);
+    sprintf(mystr,"%2.2f",TempAdjustedInputs->PositivePlateWeight);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(2,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.3f",TempAdjustedInputs->PositivePlateThickness);
+    sprintf(mystr,"%1.2f",TempAdjustedInputs->PositivePlateThickness);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(3,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.3f",TempAdjustedInputs->NegativePlateWeight);
+    sprintf(mystr,"%2.2f",TempAdjustedInputs->NegativePlateWeight);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(4,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.2f",TempAdjustedInputs->NegativePlateThickness);
+    sprintf(mystr,"%1.2f",TempAdjustedInputs->NegativePlateThickness);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(5,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.3f",TempAdjustedInputs->UsefulCellWidth);
+    sprintf(mystr,"%2.1f",TempAdjustedInputs->UsefulCellWidth);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(6,0,myItem);
 
@@ -491,11 +507,11 @@ bool MainWindow::PutOutputs(Outputs* TempOutputs)
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(5,0,myItem);
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.1f",TempOutputs->ProdTreeAcidAmount);
+    sprintf(mystr,"%3.0f",TempOutputs->ProdTreeAcidAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(6,0,myItem);
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.1f",TempOutputs->TotalLeadAmount);
+    sprintf(mystr,"%3.0f",TempOutputs->TotalLeadAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(7,0,myItem);
     myItem = new QTableWidgetItem;
@@ -512,17 +528,17 @@ bool MainWindow::PutConstants(Constants* TempConstants)
     char mystr[10];
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.3f",TempConstants->BaseAhperkg);
+    sprintf(mystr,"%3.0f",TempConstants->BaseAhperkg);
     myItem->setText(QString(mystr));
     ui->ConstantsTable->setItem(0,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.3f",TempConstants->CCAperPlate);
+    sprintf(mystr,"%3.0f",TempConstants->CCAperPlate);
     myItem->setText(QString(mystr));
     ui->ConstantsTable->setItem(1,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.3f",TempConstants->Margin);
+    sprintf(mystr,"%3.0f",TempConstants->Margin);
     myItem->setText(QString(mystr));
     ui->ConstantsTable->setItem(2,0,myItem);
 
@@ -535,7 +551,7 @@ bool MainWindow::PutInputs(Inputs* TempInputs)
     char mystr[10];
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%3.3d",TempInputs->Capacity);
+    sprintf(mystr,"%d",TempInputs->Capacity);
     myItem->setText(QString(mystr));
     ui->InputTable->setItem(0,0,myItem);
 
@@ -657,6 +673,7 @@ void MainWindow::on_actionRaporla_triggered()
 
 }
 
+
 void MainWindow::on_CalcAdjustedInputsButton_clicked()
 {
     bool getinputsresult,putadjustedinputsresult;
@@ -700,7 +717,7 @@ void MainWindow::on_CalcAdjustedInputsButton_clicked()
     if(getinputsresult && putadjustedinputsresult)
         Usermessage("Ayarlanmış girdiler tablosu güncellendi!");
     else
-        Usermessage("Eksik giriş. Lütfen kontrol edin!");
+        Usermessage("Eksik giriş. Lütfen kontrol edin!",Qt::red);
     free(TempInputs);
     free(MyAdjustedInputs);
     return;
@@ -748,15 +765,15 @@ void MainWindow::on_CalcOutputsButton_clicked()
      else
      {
          if(!getinputsresult)
-             Usermessage("Girdiler tablosunda eksik giriş var!");
+             Usermessage("Girdiler tablosunda eksik giriş var!",Qt::red);
          else
              if(!getadjustedinputsresult)
-                 Usermessage("Ayarlanmış girdiler tablosunda eksik giriş var!");
+                 Usermessage("Ayarlanmış girdiler tablosunda eksik giriş var!",Qt::red);
              else
                  if(!getconstantsresult)
-                    Usermessage("Sabitler tablosunda eksik giriş var");
+                    Usermessage("Sabitler tablosunda eksik giriş var",Qt::red);
                  else
-                    Usermessage("Bilinmeyen hata!");
+                    Usermessage("Bilinmeyen hata!",Qt::green);
      }
      free(MyInputs);
      free(MyAdjustedInputs);
@@ -808,6 +825,7 @@ void MainWindow::on_actionOpen_triggered()
     QByteArray myba;
     FILE * loadfile;
     Inputs * MyInputs;
+    char mystr[25];
     AdjustedInputs * MyAdjustedInputs;
     Constants * MyConstants;
     Outputs * MyOutputs;
@@ -830,12 +848,13 @@ void MainWindow::on_actionOpen_triggered()
     PutAdjustedInputs(MyAdjustedInputs);
     PutConstants(MyConstants);
     PutOutputs(MyOutputs);
-
+    this->setWindowTitle("Akü Tasarım -- "+myfile);
     fclose(loadfile);
 
     free(MyInputs);
     free(MyAdjustedInputs);
     free(MyConstants);
     free(MyOutputs);
-    Usermessage("Dosya açıldı.");
+    sprintf(mystr,"%s dosyası yüklendi.",myba.data());
+    Usermessage(mystr);
 }

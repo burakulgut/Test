@@ -77,6 +77,7 @@ private slots:
     bool PutInputs(Inputs* TempInputs);
 
     void Usermessage(const char * mystr);
+    void Usermessage(const char* mystr,const QColor mycolor);
 
     void on_CalcAdjustedInputsButton_clicked();
 
