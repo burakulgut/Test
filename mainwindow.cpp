@@ -608,36 +608,6 @@ bool MainWindow::PutInputs(Inputs* TempInputs)
     return(bool)1;
 }
 
-void MainWindow::on_actionHesapla_triggered()
-{
-    bool getinputsresult;
-    char resultstr[10];
-    QTableWidgetItem * myitem1;
-    Inputs * TempInputs;
-
-    TempInputs= (Inputs*)malloc(sizeof(Inputs));
-
-    getinputsresult=GetInputs(TempInputs);
-
-    if (getinputsresult)
-    {
-        sprintf(resultstr,"%d",TempInputs->Capacity);
-        myitem1 = new QTableWidgetItem;
-        myitem1->setText(QString(resultstr));
-        ui->OutputTable->setItem(0,0,myitem1);
-    }
-    else
-    {
-        Usermessage("Invalid Input");
-        myitem1 = new QTableWidgetItem;
-        myitem1->setText("Invalid Input");
-        ui->OutputTable->setItem(0,0,myitem1);
-    }
-
-
-    free(TempInputs);
-}
-
 void MainWindow::on_actionRaporla_triggered()
 {
     FILE * rapor;
@@ -648,7 +618,7 @@ void MainWindow::on_actionRaporla_triggered()
     csvstring1="";
     csvstring2="";
 
-if(0){ //htmlrapor
+if(1){ //htmlrapor
     rapor = fopen("c:\\rapor.html","w");
     fwrite("<html>\n<table>\n  <tr>\n",strlen("<html>\n<table>\n  <tr>\n"),1,rapor);
 

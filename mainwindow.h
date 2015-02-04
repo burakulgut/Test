@@ -63,7 +63,6 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_actionHesapla_triggered();
 
     void on_actionRaporla_triggered();
 
