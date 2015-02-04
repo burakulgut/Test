@@ -85,12 +85,12 @@
     </row>
     <row>
      <property name="text">
-      <string>+ sıvama</string>
+      <string>Poz. sıvama</string>
      </property>
     </row>
     <row>
      <property name="text">
-      <string>- sıvama</string>
+      <string>Neg. sıvama</string>
      </property>
     </row>
     <row>
@@ -177,6 +177,9 @@
      </property>
     </item>
     <item row="4" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
@@ -200,16 +203,25 @@
      </property>
     </item>
     <item row="6" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
     </item>
     <item row="7" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
     </item>
     <item row="8" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
@@ -220,6 +232,9 @@
      </property>
     </item>
     <item row="9" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
@@ -230,6 +245,9 @@
      </property>
     </item>
     <item row="10" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
@@ -301,22 +319,22 @@
     </row>
     <row>
      <property name="text">
-      <string>+ Izgara Ağırlığı</string>
+      <string>Poz. Izgara Ağırlığı</string>
      </property>
     </row>
     <row>
      <property name="text">
-      <string>+ Izgara Kalınlığı</string>
+      <string>Poz. Izgara Kalınlığı</string>
      </property>
     </row>
     <row>
      <property name="text">
-      <string>- Izgara Ağırlığı</string>
+      <string>Neg. Izgara Ağırlığı</string>
      </property>
     </row>
     <row>
      <property name="text">
-      <string>- Izgara Kalınlığı</string>
+      <string>Neg. Izgara Kalınlığı</string>
      </property>
     </row>
     <row>
@@ -467,12 +485,12 @@
     </row>
     <row>
      <property name="text">
-      <string>+ Ah/gr</string>
+      <string>Poz. Ah/gr</string>
      </property>
     </row>
     <row>
      <property name="text">
-      <string>- Ah/gr</string>
+      <string>Neg. Ah/gr</string>
      </property>
     </row>
     <row>
@@ -524,16 +542,25 @@
      </property>
     </item>
     <item row="1" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
     </item>
     <item row="2" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
     </item>
     <item row="3" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
@@ -544,6 +571,9 @@
      </property>
     </item>
     <item row="4" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
@@ -554,11 +584,17 @@
      </property>
     </item>
     <item row="5" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
     </item>
     <item row="6" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
@@ -569,6 +605,9 @@
      </property>
     </item>
     <item row="7" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
@@ -579,6 +618,9 @@
      </property>
     </item>
     <item row="8" column="0">
+     <property name="text">
+      <string/>
+     </property>
      <property name="textAlignment">
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>

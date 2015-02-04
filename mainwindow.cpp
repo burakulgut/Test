@@ -681,9 +681,9 @@ if(1){//csvrapor
     csvstring1+="\n";
     csvstring2+="\n";
     myba=csvstring1.toLocal8Bit();
-    fwrite(myba.data(),csvstring1.length(),1,rapor);
+    fwrite(myba.constData(),csvstring1.length(),1,rapor);
     myba=csvstring2.toLocal8Bit();
-    fwrite(myba.data(),csvstring2.length(),1,rapor);
+    fwrite(myba.constData(),csvstring2.length(),1,rapor);
 
     fclose(rapor);
 }//CSV rapor
