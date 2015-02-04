@@ -486,38 +486,47 @@ bool MainWindow::PutOutputs(Outputs* TempOutputs)
     sprintf(mystr,"%3.3f",TempOutputs->PAMNAMRatio);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(0,0,myItem);
+
     myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.3f",TempOutputs->PositiveAhperg);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(1,0,myItem);
+
     myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.3f",TempOutputs->NegativeAhperg);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(2,0,myItem);
+
     myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.3f",TempOutputs->CellSetWidth);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(3,0,myItem);
+
     myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.3f",TempOutputs->CompressionThickness);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(4,0,myItem);
+
     myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.3f",TempOutputs->AcidperActiveMass);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(5,0,myItem);
+
     myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.0f",TempOutputs->ProdTreeAcidAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(6,0,myItem);
+
     myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.0f",TempOutputs->TotalLeadAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(7,0,myItem);
+
     myItem = new QTableWidgetItem;
     sprintf(mystr,"%3.1f",TempOutputs->TotalSeparatorAmount);
     myItem->setText(QString(mystr));
     ui->OutputTable->setItem(8,0,myItem);
+
 
     return (bool)1;
 }
@@ -618,7 +627,7 @@ void MainWindow::on_actionRaporla_triggered()
     csvstring1="";
     csvstring2="";
 
-if(1){ //htmlrapor
+if(0){ //htmlrapor
     rapor = fopen("c:\\rapor.html","w");
     fwrite("<html>\n<table>\n  <tr>\n",strlen("<html>\n<table>\n  <tr>\n"),1,rapor);
 
@@ -651,8 +660,23 @@ if(1){//csvrapor
     rapor=fopen("c:\\rapor.csv","w");
     for(i=0;i<ui->InputTable->rowCount();i++)
     {
-        csvstring1+= ui->InputTable->verticalHeaderItem(i)->text()+";";
+        csvstring1+= "\""+ui->InputTable->verticalHeaderItem(i)->text()+"\";";
         csvstring2+= ui->InputTable->item(i,0)->text()+";";
+    }
+    for(i=0;i<ui->AdjustedInputTable->rowCount();i++)
+    {
+        csvstring1+= "\""+ui->AdjustedInputTable->verticalHeaderItem(i)->text()+"\";";
+        csvstring2+= ui->AdjustedInputTable->item(i,0)->text()+";";
+    }
+    for(i=0;i<ui->ConstantsTable->rowCount();i++)
+    {
+        csvstring1+= "\""+ui->ConstantsTable->verticalHeaderItem(i)->text()+"\";";
+        csvstring2+= ui->ConstantsTable->item(i,0)->text()+";";
+    }
+    for(i=0;i<ui->OutputTable->rowCount();i++)
+    {
+        csvstring1+= "\""+ui->OutputTable->verticalHeaderItem(i)->text()+"\";";
+        csvstring2+= ui->OutputTable->item(i,0)->text()+";";
     }
     csvstring1+="\n";
     csvstring2+="\n";
@@ -814,10 +838,10 @@ void MainWindow::on_actionKaydet_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
     QString myfile;
-    QByteArray myba;
     FILE * loadfile;
     Inputs * MyInputs;
-    char mystr[25];
+    char mystr[250];
+
     AdjustedInputs * MyAdjustedInputs;
     Constants * MyConstants;
     Outputs * MyOutputs;
@@ -827,9 +851,9 @@ void MainWindow::on_actionOpen_triggered()
     MyConstants = (Constants*)malloc(sizeof(Constants));
     MyOutputs = (Outputs*)malloc(sizeof(Outputs));
     myfile = QFileDialog::getOpenFileName(this,"Dosya Adı","C:\\","*.aku");
-    myba = myfile.toLocal8Bit();
-
-    loadfile = fopen(myba.data(),"rb");
+    QByteArray myba = myfile.toLocal8Bit();
+    const char *filename=myba.constData();
+    loadfile = fopen(filename,"rb");
 
     fread(MyInputs,sizeof(Inputs),1,loadfile);
     fread(MyAdjustedInputs,sizeof(AdjustedInputs),1,loadfile);
@@ -847,6 +871,6 @@ void MainWindow::on_actionOpen_triggered()
     free(MyAdjustedInputs);
     free(MyConstants);
     free(MyOutputs);
-    sprintf(mystr,"%s dosyası yüklendi.",myba.data());
+    sprintf(mystr,"%s dosyası yüklendi.",filename);
     Usermessage(mystr);
 }
