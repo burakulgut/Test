@@ -8,17 +8,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->InputTable->setColumnWidth(0,50);
-    ui->InputTable->setColumnWidth(1,50);
-    ui->InputTable->setGeometry(0,0,210,400);
+    ui->InputTable->setColumnWidth(0,60);
+    ui->InputTable->setColumnWidth(1,60);
+    ui->InputTable->setGeometry(0,0,225,400);
 
-    ui->AdjustedInputTable->setColumnWidth(0,50);
-    ui->AdjustedInputTable->setColumnWidth(1,50);
-    ui->AdjustedInputTable->setGeometry(ui->AdjustedInputTable->x(),ui->AdjustedInputTable->y(),220,ui->AdjustedInputTable->height());
+    ui->AdjustedInputTable->setColumnWidth(0,60);
+    ui->AdjustedInputTable->setColumnWidth(1,60);
+    ui->AdjustedInputTable->setGeometry(ui->AdjustedInputTable->x(),ui->AdjustedInputTable->y(),240,ui->AdjustedInputTable->height());
 
-    ui->OutputTable->setColumnWidth(0,50);
-    ui->OutputTable->setColumnWidth(1,50);
-    ui->OutputTable->setGeometry(ui->OutputTable->x(),ui->OutputTable->y(),250,400);
+    ui->OutputTable->setColumnWidth(0,60);
+    ui->OutputTable->setColumnWidth(1,60);
+    ui->OutputTable->setGeometry(ui->OutputTable->x(),ui->OutputTable->y(),260,400);
 }
 
 MainWindow::~MainWindow()
@@ -856,7 +856,12 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
     // No-op unless this is plate codes
     if(column==0 && (row ==6 || row ==7))
     {
-        ProgInputFile=fopen("C:\\Users\\bulgut\\Desktop\\Inci\\Projeler\\Software\\Plaka_ProgramInput.csv","r");
+        ProgInputFile=fopen("C:\\Users\\bulgut\\Desktop\\Inci\\Projeler\\Software\\Test\\Test\\Plaka_ProgramInput.csv","r");
+        if (ProgInputFile == NULL)
+        {
+            Usermessage("Plaka bilgileri dosyasına ulaşılamıyor.",Qt::darkYellow);
+            return;
+        }
         while(!feof(ProgInputFile)){
             fgets(PlateString,45,ProgInputFile);
             sscanf(PlateString,"%s\t%f\t%f",PlateRef,&PlateThickness,&PlateWeight);
