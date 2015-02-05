@@ -853,13 +853,14 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
     QString InputQString;
     QByteArray InputByteArray;
     QTableWidgetItem *tableitem;
-    // No-op unless this is plate codes
+    float Npositive,Nnegative;
+    // plate codes
     if(column==0 && (row ==6 || row ==7))
     {
         ProgInputFile=fopen("C:\\Users\\bulgut\\Desktop\\Inci\\Projeler\\Software\\Test\\Test\\Plaka_ProgramInput.csv","r");
         if (ProgInputFile == NULL)
         {
-            Usermessage("Plaka bilgileri dosyasına ulaşılamıyor.",Qt::darkYellow);
+            Usermessage("Plaka bilgileri dosyasına ulaşılamıyor.",Qt::darkRed);
             return;
         }
         while(!feof(ProgInputFile)){
@@ -916,4 +917,24 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
         }
         fclose(ProgInputFile);
     }
+    // # of plates
+    if(column == 0 && (row ==2 || row ==3))
+    {
+         if (!(ui->InputTable->item(2,0)== NULL ||ui->InputTable->item(3,0)== NULL))
+         {
+             Npositive=ui->InputTable->item(2,0)->text().toInt();
+             Nnegative=ui->InputTable->item(3,0)->text().toInt();
+             if (Npositive==Nnegative)
+                 Npositive=Nnegative=Npositive-0.2;
+             else
+                 (Npositive>Nnegative)? Npositive-=0.4 : Nnegative=-0.4;
+             tableitem = new QTableWidgetItem;
+             tableitem->setText(QString::number(Npositive));
+             ui->AdjustedInputTable->setItem(0,0,tableitem);
+             tableitem = new QTableWidgetItem;
+             tableitem->setText(QString::number(Nnegative));
+             ui->AdjustedInputTable->setItem(1,0,tableitem);
+         }
+    }
+
 }
