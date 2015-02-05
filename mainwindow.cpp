@@ -621,42 +621,11 @@ void MainWindow::on_actionRaporla_triggered()
 {
     FILE * rapor;
     QByteArray myba;
-    char mystr[200];
-    int stringlength,i;
+    int i;
     QString csvstring1,csvstring2;
     csvstring1="";
     csvstring2="";
 
-if(0){ //htmlrapor
-    rapor = fopen("c:\\rapor.html","w");
-    fwrite("<html>\n<table>\n  <tr>\n",strlen("<html>\n<table>\n  <tr>\n"),1,rapor);
-
-    fwrite("<td>\n",strlen("<td>\n"),1,rapor); // InputsTable
-    for(i=0;i<ui->InputTable->rowCount();i++)
-    {
-        myba = ui->InputTable->verticalHeaderItem(i)->text().toLocal8Bit();
-        stringlength=sprintf(mystr,"<tr><td>%s =</td> <td>%f</td></tr>\n",myba.data(),ui->InputTable->item(i,0)->text().toDouble());
-        fwrite(mystr,stringlength,1,rapor);
-    }
-    fwrite("</td>\n",5,1,rapor); // InputsTable
-
-    fwrite("<td>\n",5,1,rapor); // AdjustedInputsTable
-    for(i=0;i<ui->AdjustedInputTable->rowCount();i++)
-    {
-        myba = ui->AdjustedInputTable->verticalHeaderItem(i)->text().toLocal8Bit();
-        stringlength=sprintf(mystr,"<tr><td>%s =</td> <td>%f</td></tr>\n",myba.data(),ui->AdjustedInputTable->item(i,0)->text().toDouble());
-        fwrite(mystr,stringlength,1,rapor);
-    }
-    fwrite("</td>\n",5,1,rapor); // AdjustedInputsTable
-
-
-
-    fwrite("\n</tr>\n</table>\n</html>",17,1,rapor);
-    fclose(rapor);
-}//htmlrapor
-
-
-if(1){//csvrapor
     rapor=fopen("c:\\rapor.csv","w");
     for(i=0;i<ui->InputTable->rowCount();i++)
     {
@@ -686,7 +655,6 @@ if(1){//csvrapor
     fwrite(myba.constData(),csvstring2.length(),1,rapor);
 
     fclose(rapor);
-}//CSV rapor
 }
 
 
@@ -873,4 +841,74 @@ void MainWindow::on_actionOpen_triggered()
     free(MyOutputs);
     sprintf(mystr,"%s dosyası yüklendi.",filename);
     Usermessage(mystr);
+}
+
+void MainWindow::on_InputTable_cellChanged(int row, int column)
+{
+    FILE * ProgInputFile;
+    char PlateString[200];
+    char PlateRef[50];
+    float PlateThickness=0.0;
+    float PlateWeight=0.0;
+    QString InputQString;
+    QByteArray InputByteArray;
+    QTableWidgetItem *tableitem;
+    // No-op unless this is plate codes
+    if(column==0 && (row ==6 || row ==7))
+    {
+        ProgInputFile=fopen("C:\\Users\\bulgut\\Desktop\\Inci\\Projeler\\Software\\Plaka_ProgramInput.csv","r");
+        while(!feof(ProgInputFile)){
+            fgets(PlateString,45,ProgInputFile);
+            sscanf(PlateString,"%s\t%f\t%f",PlateRef,&PlateThickness,&PlateWeight);
+            InputQString= ui->InputTable->item(row,column)->text();
+            InputByteArray=InputQString.toLocal8Bit();
+            if(strstr(PlateRef,InputByteArray.constData())!=NULL)
+            {
+                if(row==6)
+                {
+                    tableitem = new QTableWidgetItem;
+                    tableitem->setText(QString::number(PlateWeight));
+                    ui->AdjustedInputTable->setItem(2,0,tableitem);
+                    tableitem = new QTableWidgetItem;
+                    tableitem->setText(QString::number(PlateThickness));
+                    ui->AdjustedInputTable->setItem(3,0,tableitem);
+                    break;
+                }
+                else
+                {
+                    tableitem = new QTableWidgetItem;
+                    tableitem->setText(QString::number(PlateWeight));
+                    ui->AdjustedInputTable->setItem(4,0,tableitem);
+                    tableitem = new QTableWidgetItem;
+                    tableitem->setText(QString::number(PlateThickness));
+                    ui->AdjustedInputTable->setItem(5,0,tableitem);
+                    break;
+                }
+            }
+        }
+        if(feof(ProgInputFile))
+        {
+            if(row==6)
+            {
+                tableitem = new QTableWidgetItem;
+                tableitem->setText("");
+                ui->AdjustedInputTable->setItem(2,0,tableitem);
+                tableitem = new QTableWidgetItem;
+                tableitem->setText("");
+                ui->AdjustedInputTable->setItem(3,0,tableitem);
+                Usermessage("Bilinmeyen pozitif plaka kodu",Qt::red);
+            }
+            else
+            {
+                tableitem = new QTableWidgetItem;
+                tableitem->setText("");
+                ui->AdjustedInputTable->setItem(4,0,tableitem);
+                tableitem = new QTableWidgetItem;
+                tableitem->setText("");
+                ui->AdjustedInputTable->setItem(5,0,tableitem);
+                Usermessage("Bilinmeyen negatif plaka kodu",Qt::red);
+            }
+        }
+        fclose(ProgInputFile);
+    }
 }

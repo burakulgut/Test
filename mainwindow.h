@@ -88,6 +88,8 @@ private slots:
 
     void on_actionOpen_triggered();
 
+    void on_InputTable_cellChanged(int row, int column);
+
 private:
     Ui::MainWindow *ui;
 
