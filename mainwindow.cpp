@@ -877,12 +877,12 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
             sscanf(PlateString,"%s\t%f\t%f\t%f",PlateRef,&gridthickness,&gridweight,&gridheight);
             InputQString= ui->InputTable->item(row,column)->text();
             InputByteArray=InputQString.toLocal8Bit();
-            tableitem = new QTableWidgetItem;
-            tableitem->setText(QString::number(gridheight));
-            ui->InputTable->setItem(11,0,tableitem);
 
             if(strstr(PlateRef,InputByteArray.constData())!=NULL)
             {
+                tableitem = new QTableWidgetItem;
+                tableitem->setText(QString::number(gridheight));
+                ui->InputTable->setItem(11,0,tableitem);
                 if(row==6)
                 {
                     tableitem = new QTableWidgetItem;
@@ -950,4 +950,44 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
          }
     }
 
+}
+
+void MainWindow::on_BoxTypeCombo_currentIndexChanged(int index)
+{
+    FILE * ProgInputFile;
+    char BoxString[100];
+    char BoxName[100];
+    float Usefulwidth = 0;
+    QString InputQString;
+    QByteArray InputByteArray;
+    QTableWidgetItem *tableitem;
+
+    ProgInputFile = fopen("C:\\Users\\bulgut\\Desktop\\Inci\\Projeler\\Software\\Test\\Test\\Kutu_ProgramInput.txt","r");
+    if (ProgInputFile == NULL)
+    {
+        Usermessage("Kutu bilgileri dosyasına ulaşılamıyor.",Qt::darkRed);
+        return;
+    }
+    InputQString= ui->BoxTypeCombo->itemText(index);
+    InputByteArray=InputQString.toLocal8Bit();
+
+    while(!feof(ProgInputFile))
+    {
+        fgets(BoxString,45,ProgInputFile);
+        sscanf(BoxString,"%s\t%f",BoxName,&Usefulwidth);
+
+        if(strstr(BoxString,InputByteArray.constData())!=NULL)
+        {
+            tableitem = new QTableWidgetItem;
+            tableitem->setText(QString::number(Usefulwidth));
+            ui->AdjustedInputTable->setItem(6,0,tableitem);
+            break;
+        }
+
+    }
+    if(feof(ProgInputFile))
+    {
+        Usermessage("Bilinmeyen kutu kodu.",Qt::red);
+    }
+    fclose(ProgInputFile);
 }
