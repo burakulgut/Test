@@ -748,7 +748,7 @@ void MainWindow::on_CalcOutputsButton_clicked()
      MyOutputs->AcidperActiveMass = MyInputs->DrNAcidVolume/(MyInputs->NofPositivePlates*MyInputs->PositivePaste+MyInputs->NofNegativePlates*MyInputs->NegativePaste);
      MyOutputs->ProdTreeAcidAmount= MyInputs->DrNAcidVolume*0.3795*1.285*6;
      MyOutputs->TotalLeadAmount= 6*(MyInputs->NofPositivePlates*MyAdjustedInputs->Positivegridweight + MyInputs->NofNegativePlates*MyAdjustedInputs->Negativegridweight+0.9*MyInputs->PositivePaste*MyInputs->NofPositivePlates+0.9*MyInputs->NegativePaste*MyInputs->NofNegativePlates);
-     MyOutputs->TotalSeparatorAmount = 0.0;
+     MyOutputs->TotalSeparatorAmount = (MyInputs->Plateheight+8)*MyInputs->SeparatorThickness*MyInputs->NofPositivePlates*12;
 
      putoutputsresult = PutOutputs(MyOutputs);
 
@@ -859,6 +859,7 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
     float gridthickness=0.0;
     float gridweight=0.0;
     float gridheight=0.0;
+    float plateweight=0.0;
     QString InputQString;
     QByteArray InputByteArray;
     QTableWidgetItem *tableitem;
@@ -874,7 +875,7 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
         }
         while(!feof(ProgInputFile)){
             fgets(PlateString,45,ProgInputFile);
-            sscanf(PlateString,"%s\t%f\t%f\t%f",PlateRef,&gridthickness,&gridweight,&gridheight);
+            sscanf(PlateString,"%s\t%f\t%f\t%f\t%f",PlateRef,&gridthickness,&gridweight,&gridheight,&plateweight);
             InputQString= ui->InputTable->item(row,column)->text();
             InputByteArray=InputQString.toLocal8Bit();
 
