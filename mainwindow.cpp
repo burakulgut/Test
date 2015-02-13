@@ -49,20 +49,7 @@ void MainWindow::Usermessage(const char* mystr,const QColor mycolor){
     ui->MessageLabel->setText(QString(mystr));
 
 }
-/*
-InputTable              AdjustedInputTable      OutputTable                 ConstantsTable
-0 Kapasite              0 N+                    0 PAM/NAM                   0 Taban Ah/kg
-1 CCA                   1 N-                    1 +Ah/gr                    1 CCA / Plaka
-2 # +                   2 + Izg. Ağırlığı       2 -Ah/gr                    2 Marj
-3 # -                   3 + Izg. Kalınlığı      3 Eleman Set Kalınlığı
-4 + sıvama              4 - Izg. Ağırlığı       4 Sıkıştırma Miktarı
-5 - sıvama              5 - Izg. Kalınlığı      5 Asit Mik./(PAM+NAM)
-6 Pozitif Kod           6 Faydalı Hücre Gen.    6 Ü.A. Asit Miktarı
-7 Negatif Kod                                   7 Toplam Kurşun Miktarı
-8 Sep. Kalınlığı                                8 Separatör Miktarı
-9 Sep. Genişliği
-10 DrNAsitHacmi
-*/
+
 bool MainWindow::GetInputs(Inputs * TempInputs)
 {
     QTableWidgetItem *myitem;
@@ -190,6 +177,16 @@ bool MainWindow::GetInputs(Inputs * TempInputs)
     {
         TempInputs->DrNAcidVolume = myitem->text().toShort();
     }
+    myitem = ui->InputTable->item(11,0);
+    if (myitem == 0)
+    {
+        result=0;
+        TempInputs->Plateheight = 0;
+    }
+    else
+    {
+        TempInputs->Plateheight = myitem->text().toShort();
+    }
     if(TempInputs->Capacity == 0 ||
             TempInputs->CCA==0 ||
             TempInputs->DrNAcidVolume==0 ||
@@ -197,7 +194,8 @@ bool MainWindow::GetInputs(Inputs * TempInputs)
             TempInputs->NofNegativePlates==0 ||
             TempInputs->NofPositivePlates==0 ||
             TempInputs->PositivePaste==0.0 ||
-            TempInputs->SeparatorThickness==0)
+            TempInputs->SeparatorThickness==0||
+            TempInputs->Plateheight==0)
         result=0;
 
     return result;
@@ -235,44 +233,44 @@ bool MainWindow::GetAdjustedInputs(AdjustedInputs * TempAdjustedInputs)
     if (myitem == 0)
     {
         result=0;
-        TempAdjustedInputs->PositivePlateWeight = 0;
+        TempAdjustedInputs->Positivegridweight = 0;
     }
     else
     {
-        TempAdjustedInputs->PositivePlateWeight = myitem->text().toFloat();
+        TempAdjustedInputs->Positivegridweight = myitem->text().toFloat();
     }
 
     myitem = ui->AdjustedInputTable->item(3,0);
     if (myitem == 0)
     {
         result=0;
-        TempAdjustedInputs->PositivePlateThickness = 0;
+        TempAdjustedInputs->Positivegridthickness = 0;
     }
     else
     {
-        TempAdjustedInputs->PositivePlateThickness = myitem->text().toFloat();
+        TempAdjustedInputs->Positivegridthickness = myitem->text().toFloat();
     }
 
     myitem = ui->AdjustedInputTable->item(4,0);
     if (myitem == 0)
     {
         result=0;
-        TempAdjustedInputs->NegativePlateWeight = 0;
+        TempAdjustedInputs->Negativegridweight = 0;
     }
     else
     {
-        TempAdjustedInputs->NegativePlateWeight = myitem->text().toFloat();
+        TempAdjustedInputs->Negativegridweight = myitem->text().toFloat();
     }
 
     myitem = ui->AdjustedInputTable->item(5,0);
     if (myitem == 0)
     {
         result=0;
-        TempAdjustedInputs->NegativePlateThickness = 0;
+        TempAdjustedInputs->Negativegridthickness = 0;
     }
     else
     {
-        TempAdjustedInputs->NegativePlateThickness = myitem->text().toFloat();
+        TempAdjustedInputs->Negativegridthickness = myitem->text().toFloat();
     }
     myitem = ui->AdjustedInputTable->item(6,0);
     if (myitem == 0)
@@ -450,22 +448,22 @@ bool MainWindow::PutAdjustedInputs(AdjustedInputs * TempAdjustedInputs)
     ui->AdjustedInputTable->setItem(1,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%2.2f",TempAdjustedInputs->PositivePlateWeight);
+    sprintf(mystr,"%2.2f",TempAdjustedInputs->Positivegridweight);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(2,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%1.2f",TempAdjustedInputs->PositivePlateThickness);
+    sprintf(mystr,"%1.2f",TempAdjustedInputs->Positivegridthickness);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(3,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%2.2f",TempAdjustedInputs->NegativePlateWeight);
+    sprintf(mystr,"%2.2f",TempAdjustedInputs->Negativegridweight);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(4,0,myItem);
 
     myItem = new QTableWidgetItem;
-    sprintf(mystr,"%1.2f",TempAdjustedInputs->NegativePlateThickness);
+    sprintf(mystr,"%1.2f",TempAdjustedInputs->Negativegridthickness);
     myItem->setText(QString(mystr));
     ui->AdjustedInputTable->setItem(5,0,myItem);
 
@@ -614,6 +612,10 @@ bool MainWindow::PutInputs(Inputs* TempInputs)
     myItem->setText(QString(mystr));
     ui->InputTable->setItem(10,0,myItem);
 
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%3.0d",TempInputs->Plateheight);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(11,0,myItem);
     return(bool)1;
 }
 
@@ -622,11 +624,15 @@ void MainWindow::on_actionRaporla_triggered()
     FILE * rapor;
     QByteArray myba;
     int i;
-    QString csvstring1,csvstring2;
+    QString csvstring1,csvstring2,myfile;
     csvstring1="";
     csvstring2="";
 
-    rapor=fopen("c:\\rapor.csv","w");
+    myfile=QFileDialog::getSaveFileName(this,"Rapor Adı","C:\\","*.csv");
+    myba=myfile.toLocal8Bit();
+
+
+    rapor=fopen(myba.constData(),"w");
     for(i=0;i<ui->InputTable->rowCount();i++)
     {
         csvstring1+= "\""+ui->InputTable->verticalHeaderItem(i)->text()+"\";";
@@ -649,14 +655,16 @@ void MainWindow::on_actionRaporla_triggered()
     }
     csvstring1+="\n";
     csvstring2+="\n";
+    csvstring1.replace(".",",");
+    csvstring2.replace(".",",");
     myba=csvstring1.toLocal8Bit();
     fwrite(myba.constData(),csvstring1.length(),1,rapor);
     myba=csvstring2.toLocal8Bit();
     fwrite(myba.constData(),csvstring2.length(),1,rapor);
 
     fclose(rapor);
+    Usermessage("Rapor kaydedildi.");
 }
-
 
 void MainWindow::on_CalcAdjustedInputsButton_clicked()
 {
@@ -688,10 +696,10 @@ void MainWindow::on_CalcAdjustedInputsButton_clicked()
                MyAdjustedInputs->AdjustedNegativePlates=TempInputs->NofNegativePlates-0.4;
            }
        }
-       MyAdjustedInputs->NegativePlateWeight = 0.0;
-       MyAdjustedInputs->NegativePlateThickness=0.0;
-       MyAdjustedInputs->PositivePlateWeight = 0.0;
-       MyAdjustedInputs->PositivePlateThickness=0.0;
+       MyAdjustedInputs->Negativegridweight = 0.0;
+       MyAdjustedInputs->Negativegridthickness=0.0;
+       MyAdjustedInputs->Positivegridweight = 0.0;
+       MyAdjustedInputs->Positivegridthickness=0.0;
        MyAdjustedInputs->UsefulCellWidth=0.0;
 
        putadjustedinputsresult=PutAdjustedInputs(MyAdjustedInputs);
@@ -735,11 +743,11 @@ void MainWindow::on_CalcOutputsButton_clicked()
      MyOutputs->PAMNAMRatio= MyInputs->NofPositivePlates*MyInputs->PositivePaste /(MyInputs->NofNegativePlates*MyInputs->NegativePaste);
      MyOutputs->PositiveAhperg = (MyInputs->NofPositivePlates*MyInputs->PositivePaste)/MyInputs->Capacity;
      MyOutputs->NegativeAhperg = (MyInputs->NofNegativePlates*MyInputs->NegativePaste)/MyInputs->Capacity;
-     MyOutputs->CellSetWidth = MyInputs->NofPositivePlates*MyAdjustedInputs->PositivePlateThickness+MyInputs->NofNegativePlates*MyAdjustedInputs->NegativePlateThickness+2*MyInputs->NofNegativePlates*MyInputs->SeparatorThickness;
+     MyOutputs->CellSetWidth = MyInputs->NofPositivePlates*MyAdjustedInputs->Positivegridthickness+MyInputs->NofNegativePlates*MyAdjustedInputs->Negativegridthickness+2*MyInputs->NofNegativePlates*MyInputs->SeparatorThickness;
      MyOutputs->CompressionThickness = MyAdjustedInputs->UsefulCellWidth - MyOutputs->CellSetWidth;
      MyOutputs->AcidperActiveMass = MyInputs->DrNAcidVolume/(MyInputs->NofPositivePlates*MyInputs->PositivePaste+MyInputs->NofNegativePlates*MyInputs->NegativePaste);
      MyOutputs->ProdTreeAcidAmount= MyInputs->DrNAcidVolume*0.3795*1.285*6;
-     MyOutputs->TotalLeadAmount= 6*(MyInputs->NofPositivePlates*MyAdjustedInputs->PositivePlateWeight + MyInputs->NofNegativePlates*MyAdjustedInputs->NegativePlateWeight+0.9*MyInputs->PositivePaste*MyInputs->NofPositivePlates+0.9*MyInputs->NegativePaste*MyInputs->NofNegativePlates);
+     MyOutputs->TotalLeadAmount= 6*(MyInputs->NofPositivePlates*MyAdjustedInputs->Positivegridweight + MyInputs->NofNegativePlates*MyAdjustedInputs->Negativegridweight+0.9*MyInputs->PositivePaste*MyInputs->NofPositivePlates+0.9*MyInputs->NegativePaste*MyInputs->NofNegativePlates);
      MyOutputs->TotalSeparatorAmount = 0.0;
 
      putoutputsresult = PutOutputs(MyOutputs);
@@ -848,8 +856,9 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
     FILE * ProgInputFile;
     char PlateString[200];
     char PlateRef[50];
-    float PlateThickness=0.0;
-    float PlateWeight=0.0;
+    float gridthickness=0.0;
+    float gridweight=0.0;
+    float gridheight=0.0;
     QString InputQString;
     QByteArray InputByteArray;
     QTableWidgetItem *tableitem;
@@ -857,7 +866,7 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
     // plate codes
     if(column==0 && (row ==6 || row ==7))
     {
-        ProgInputFile=fopen("C:\\Users\\bulgut\\Desktop\\Inci\\Projeler\\Software\\Test\\Test\\Plaka_ProgramInput.csv","r");
+        ProgInputFile=fopen("C:\\Users\\bulgut\\Desktop\\Inci\\Projeler\\Software\\Test\\Test\\Plaka_ProgramInput.txt","r");
         if (ProgInputFile == NULL)
         {
             Usermessage("Plaka bilgileri dosyasına ulaşılamıyor.",Qt::darkRed);
@@ -865,28 +874,32 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
         }
         while(!feof(ProgInputFile)){
             fgets(PlateString,45,ProgInputFile);
-            sscanf(PlateString,"%s\t%f\t%f",PlateRef,&PlateThickness,&PlateWeight);
+            sscanf(PlateString,"%s\t%f\t%f\t%f",PlateRef,&gridthickness,&gridweight,&gridheight);
             InputQString= ui->InputTable->item(row,column)->text();
             InputByteArray=InputQString.toLocal8Bit();
+            tableitem = new QTableWidgetItem;
+            tableitem->setText(QString::number(gridheight));
+            ui->InputTable->setItem(11,0,tableitem);
+
             if(strstr(PlateRef,InputByteArray.constData())!=NULL)
             {
                 if(row==6)
                 {
                     tableitem = new QTableWidgetItem;
-                    tableitem->setText(QString::number(PlateWeight));
+                    tableitem->setText(QString::number(gridweight));
                     ui->AdjustedInputTable->setItem(2,0,tableitem);
                     tableitem = new QTableWidgetItem;
-                    tableitem->setText(QString::number(PlateThickness));
+                    tableitem->setText(QString::number(gridthickness));
                     ui->AdjustedInputTable->setItem(3,0,tableitem);
                     break;
                 }
                 else
                 {
                     tableitem = new QTableWidgetItem;
-                    tableitem->setText(QString::number(PlateWeight));
+                    tableitem->setText(QString::number(gridweight));
                     ui->AdjustedInputTable->setItem(4,0,tableitem);
                     tableitem = new QTableWidgetItem;
-                    tableitem->setText(QString::number(PlateThickness));
+                    tableitem->setText(QString::number(gridthickness));
                     ui->AdjustedInputTable->setItem(5,0,tableitem);
                     break;
                 }

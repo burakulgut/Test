@@ -16,16 +16,17 @@ struct Inputs
     float SeparatorThickness;
     float SeparatorWidth;
     short DrNAcidVolume;
+    short Plateheight;
 };
 
 struct AdjustedInputs
 {
     float AdjustedPositivePlates;
     float AdjustedNegativePlates;
-    float PositivePlateWeight;
-    float PositivePlateThickness;
-    float NegativePlateWeight;
-    float NegativePlateThickness;
+    float Positivegridweight;
+    float Positivegridthickness;
+    float Negativegridweight;
+    float Negativegridthickness;
     float UsefulCellWidth;
 };
 
