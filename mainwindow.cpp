@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->InputTable->setColumnWidth(0,60);
     ui->InputTable->setColumnWidth(1,60);
-    ui->InputTable->setGeometry(0,0,225,400);
+    ui->InputTable->setGeometry(0,0,225,425);
 
     ui->AdjustedInputTable->setColumnWidth(0,60);
     ui->AdjustedInputTable->setColumnWidth(1,60);
@@ -187,6 +187,15 @@ bool MainWindow::GetInputs(Inputs * TempInputs)
     {
         TempInputs->Plateheight = myitem->text().toShort();
     }
+    myitem = ui->InputTable->item(12,0);
+    if (myitem == 0)
+    {
+        result=0;
+    }
+    else
+    {
+        myitem->text().toWCharArray(TempInputs->BoxType);
+    }
     if(TempInputs->Capacity == 0 ||
             TempInputs->CCA==0 ||
             TempInputs->DrNAcidVolume==0 ||
@@ -195,7 +204,8 @@ bool MainWindow::GetInputs(Inputs * TempInputs)
             TempInputs->NofPositivePlates==0 ||
             TempInputs->PositivePaste==0.0 ||
             TempInputs->SeparatorThickness==0||
-            TempInputs->Plateheight==0)
+            TempInputs->Plateheight==0 ||
+            TempInputs->BoxType == 0)
         result=0;
 
     return result;
@@ -616,6 +626,11 @@ bool MainWindow::PutInputs(Inputs* TempInputs)
     sprintf(mystr,"%3.0d",TempInputs->Plateheight);
     myItem->setText(QString(mystr));
     ui->InputTable->setItem(11,0,myItem);
+
+    myItem = new QTableWidgetItem;
+    sprintf(mystr,"%ls",TempInputs->BoxType);
+    myItem->setText(QString(mystr));
+    ui->InputTable->setItem(12,0,myItem);
     return(bool)1;
 }
 
@@ -864,6 +879,10 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
     QByteArray InputByteArray;
     QTableWidgetItem *tableitem;
     float Npositive,Nnegative;
+    char BoxString[100];
+    char BoxName[100];
+    float Usefulwidth = 0;
+
     // plate codes
     if(column==0 && (row ==6 || row ==7))
     {
@@ -949,6 +968,37 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
              tableitem->setText(QString::number(Nnegative));
              ui->AdjustedInputTable->setItem(1,0,tableitem);
          }
+    }
+    if(column == 0 && row ==12)
+    {
+        ProgInputFile = fopen("C:\\Users\\bulgut\\Desktop\\Inci\\Projeler\\Software\\Test\\Test\\Kutu_ProgramInput.txt","r");
+        if (ProgInputFile == NULL)
+        {
+            Usermessage("Kutu bilgileri dosyasına ulaşılamıyor.",Qt::darkRed);
+            return;
+        }
+        InputQString= ui->InputTable->item(12,0)->text();
+        InputByteArray=InputQString.toLocal8Bit();
+
+        while(!feof(ProgInputFile))
+        {
+            fgets(BoxString,45,ProgInputFile);
+            sscanf(BoxString,"%s\t%f",BoxName,&Usefulwidth);
+
+            if(strstr(BoxString,InputByteArray.constData())!=NULL)
+            {
+                tableitem = new QTableWidgetItem;
+                tableitem->setText(QString::number(Usefulwidth));
+                ui->AdjustedInputTable->setItem(6,0,tableitem);
+                break;
+            }
+
+        }
+        if(feof(ProgInputFile))
+        {
+            Usermessage("Bilinmeyen kutu kodu.",Qt::red);
+        }
+        fclose(ProgInputFile);
     }
 
 }

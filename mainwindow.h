@@ -17,6 +17,7 @@ struct Inputs
     float SeparatorWidth;
     short DrNAcidVolume;
     short Plateheight;
+    wchar_t BoxType[10];
 };
 
 struct AdjustedInputs
