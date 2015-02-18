@@ -92,8 +92,6 @@ private slots:
 
     void on_InputTable_cellChanged(int row, int column);
 
-    void on_BoxTypeCombo_currentIndexChanged(int index);
-
 private:
     Ui::MainWindow *ui;
 

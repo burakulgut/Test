@@ -911,6 +911,7 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
                     tableitem = new QTableWidgetItem;
                     tableitem->setText(QString::number(gridthickness));
                     ui->AdjustedInputTable->setItem(3,0,tableitem);
+                    Usermessage("Pozitif plaka bilgileri güncellendi.");
                     break;
                 }
                 else
@@ -921,6 +922,7 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
                     tableitem = new QTableWidgetItem;
                     tableitem->setText(QString::number(gridthickness));
                     ui->AdjustedInputTable->setItem(5,0,tableitem);
+                    Usermessage("Negatif plaka bilgileri güncellendi.");
                     break;
                 }
             }
@@ -968,6 +970,7 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
              tableitem->setText(QString::number(Nnegative));
              ui->AdjustedInputTable->setItem(1,0,tableitem);
          }
+         Usermessage("Plaka sayıları güncellendi.");
     }
     if(column == 0 && row ==12)
     {
@@ -990,6 +993,7 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
                 tableitem = new QTableWidgetItem;
                 tableitem->setText(QString::number(Usefulwidth));
                 ui->AdjustedInputTable->setItem(6,0,tableitem);
+                Usermessage("Kutu bilgileri güncellendi.");
                 break;
             }
 
@@ -1001,44 +1005,4 @@ void MainWindow::on_InputTable_cellChanged(int row, int column)
         fclose(ProgInputFile);
     }
 
-}
-
-void MainWindow::on_BoxTypeCombo_currentIndexChanged(int index)
-{
-    FILE * ProgInputFile;
-    char BoxString[100];
-    char BoxName[100];
-    float Usefulwidth = 0;
-    QString InputQString;
-    QByteArray InputByteArray;
-    QTableWidgetItem *tableitem;
-
-    ProgInputFile = fopen("C:\\Users\\bulgut\\Desktop\\Inci\\Projeler\\Software\\Test\\Test\\Kutu_ProgramInput.txt","r");
-    if (ProgInputFile == NULL)
-    {
-        Usermessage("Kutu bilgileri dosyasına ulaşılamıyor.",Qt::darkRed);
-        return;
-    }
-    InputQString= ui->BoxTypeCombo->itemText(index);
-    InputByteArray=InputQString.toLocal8Bit();
-
-    while(!feof(ProgInputFile))
-    {
-        fgets(BoxString,45,ProgInputFile);
-        sscanf(BoxString,"%s\t%f",BoxName,&Usefulwidth);
-
-        if(strstr(BoxString,InputByteArray.constData())!=NULL)
-        {
-            tableitem = new QTableWidgetItem;
-            tableitem->setText(QString::number(Usefulwidth));
-            ui->AdjustedInputTable->setItem(6,0,tableitem);
-            break;
-        }
-
-    }
-    if(feof(ProgInputFile))
-    {
-        Usermessage("Bilinmeyen kutu kodu.",Qt::red);
-    }
-    fclose(ProgInputFile);
 }
